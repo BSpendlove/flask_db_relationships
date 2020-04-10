@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-3 ml-2 p-4">
+			<h2 class="text-primary">API</h2>
+		</div>
+	</div>
+	<div class="row border rounded p-2 mb-2 bg-light">
+		<pre id="api-results">{{ api_results }}</pre>
+	</div>
+</div>
+{% endblock %}

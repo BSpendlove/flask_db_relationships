@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{% block title %}{%endblock%} - DB Relationship</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+	</head>
+
+	{% block navbar %}
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Logo</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="{{ url_for('users.users_home')}}" id="navbardrop" data-toggle="dropdown">
+                  Users
+                </a>
+                <div class="dropdown-menu">
+					<a class="dropdown-item" href="{{ url_for('users.users_add')}}">Add</a>
+                	<a class="dropdown-item" href="{{ url_for('users.users_home')}}">View</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+            	<a class="nav-link dropdown-toggle" href="{{ url_for('devices.devices_home')}}" id="navbardrop" data-toggle="dropdown">
+                  Devices
+                </a>
+                <div class="dropdown-menu">
+					<a class="dropdown-item" href="{{ url_for('devices.devices_add')}}">Add</a>
+					<a class="dropdown-item" href="{{ url_for('devices.devices_home')}}">View</a>
+                </div>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ url_for('api.api_home')}}">API</a>
+			</li>
+          </ul>
+    </nav>
+    {% endblock %}
+
+	{% block body %}
+	<div class="main">
+		<div class="container-fluid">
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for message in messages %}
+				<div class="alert alert-info" role="alert">{{ message }}</div>
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
+
+			{% block content %}
+			{% endblock %}
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	{% block scripts %}{% endblock %}
+	{% endblock %}
+</html>

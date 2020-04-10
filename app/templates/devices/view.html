@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="container-fluid">
+		<h2 class="text-primary p-2 mt-2 ml-2">{{ device.friendly_name }}</h2>
+        <div class="row">
+			<div class="card col-md-4 p-4 ml-2 shadow-sm p-4 mb-4 bg-white">
+                <h3>Device Details</h3>
+                <hr>
+                <div id="device_details">
+                    <p><strong>IP Address: </strong>{{ device.ip_addr}}</p>
+                    <p><strong>Netmiko Driver: </strong>{{ device.netmiko_driver}}</p>
+                    <p><strong>User: </strong>{{ device.user.username }} <a href="" class="btn btn-xs btn-warning" title="Edit User"><i class="far fa-edit" aria-hidden="true"></i></a></p>
+                </div>
+            </div>
+            <div class="card col-md-4 p-4 ml-2 shadow-sm p-4 mb-4 bg-white">
+                <h3>Software<button id="refreshSoftwareBtn" class="btn btn-sm btn-primary float-right">Refresh</button></h3>
+                <hr>
+                <div id="device_details">
+                    <p id="dd_hostname"><strong>Hostname: </strong>{{ device.software_facts.hostname }}</p>
+                    <p id="dd_hardware"><strong>Hardware: </strong>{{ device.software_facts.hardware}}</p>
+                    <p id="dd_version"><strong>Version: </strong>{{ device.software_facts.version }}</p>
+                    <p id="dd_uptime"><strong>Uptime: </strong>{{ device.software_facts.uptime }}</p>
+                    <p id="dd_runningimage"><strong>Image: </strong>{{ device.software_facts.running_image }}</p>
+                    <p id="serial"><strong>Serial: </strong>{{ device.software_facts.serial }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card col-md-12 p-4 ml-12 shadow-sm p-4 mb-4 bg-white">
+                <h3>Interfaces<button id="getInterfacesBtn" class="btn btn-lg btn-primary float-right">Refresh</button></h3>
+                <hr>
+                <div class="table-responsive col-md-12">
+                    <table id="interfaceTbl" class="table table-striped table-hover table-condensed display">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Link Status</th>
+                                <th>Protocol Status</th>
+                                <th>Hardware Type</th>
+                                <th>Description</th>
+                                <th>IP Address</th>
+                                <th>MTU</th>
+                                <th>Duplex</th>
+                                <th>Speed</th>
+                                <th>Last Input</th>
+                                <th>Last Output</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for interface in device.interface_facts %}
+                            <tr>
+                                <td>{{ interface.interface }}</td>
+                                <td>{{ interface.link_status }}</td>
+                                <td>{{ interface.protocol_status }}</td>
+                                <td>{{ interface.hardware_type }}</td>
+                                <td>{{ interface.description }}</td>
+                                <td>{{ interface.ip_address }}</td>
+                                <td>{{ interface.mtu }}</td>
+                                <td>{{ interface.duplex }}</td>
+                                <td>{{ interface.speed }}</td>
+                                <td>{{ interface.last_input }}</td>
+                                <td>{{ interface.last_output }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="testBtn" class="btn btn-xs btn-primary">Test</button>
+
+        
+{% endblock %}
+
+{%block scripts %}
+<script type="text/javascript">
+    var $user_id = {{ device.user.id }};
+    var $device_id = {{ device.id }};
+</script>
+<script src="{{ url_for('static', filename='js/devices/view.js') }}"></script>
+{% endblock %}
